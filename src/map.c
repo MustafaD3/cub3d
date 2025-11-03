@@ -6,11 +6,16 @@
 /*   By: mdalkili <mdalkilic344@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 19:25:00 by mdalkili          #+#    #+#             */
-/*   Updated: 2025/10/23 20:33:38 by mdalkili         ###   ########.fr       */
+/*   Updated: 2025/11/02 04:56:54 by mdalkili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+static void parse_line(t_map *map, char *temp)
+{
+	parse_direction(map, temp);
+}
 
 static char *concate(char *buffer,char *tmp,int tmp_len)
 {
@@ -33,18 +38,28 @@ static char *concate(char *buffer,char *tmp,int tmp_len)
 	return (result);
 }
 
-static char *read_map(int map_fd)
+static char *read_map(int map_fd, t_map *map)
 {
-	char *buffer;
-	char temp[128];
-	int read_byte;
+	char	*buffer;
+	char	temp[128];
+	int		read_byte;
+	int		position;
 	
+	position = 0;
 	buffer = NULL;
 	while(1)
 	{
-		read_byte = read(map_fd,temp,127);
+		read_byte = read(map_fd,temp,1);
 		if(read_byte <= 0)
 			break;
+		position = string_find_char(temp, '\n', position);
+		printf("%d\n",position);
+		if(position)
+		{
+			parse_line(map, temp);
+			printf("bulundu\n");
+			position++;
+		}
 		temp[read_byte] = 0;
 		buffer = concate(buffer,temp,read_byte);
 	}
@@ -52,7 +67,7 @@ static char *read_map(int map_fd)
 	if(buffer)
 		free(buffer);
 	return NULL;
-}
+	}
 
 static int open_map(char *path)
 {
@@ -67,11 +82,11 @@ static int open_map(char *path)
 	return map_fd;
 }
 
-char	*open_and_read_map(char *path)
+void open_and_read_map(char *path, t_map *map)
 {
 	int map_fd;
 	char *result;
 
 	map_fd = open_map(path);
-	result = read_map(map_fd);	
+	result = read_map(map_fd, map);
 }

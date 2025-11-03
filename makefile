@@ -1,7 +1,7 @@
 NAME=cub3d
 CC=cc
 FLAGS= -Wall -Wextra -Werror
-SRC= src/file_extension.c src/string_utils.c src/map.c main.c
+SRC= src/file_extension.c src/string_utils.c src/map.c src/map_two.c main.c
 OBJ=$(SRC:.c=.o)
 
 all:$(NAME)

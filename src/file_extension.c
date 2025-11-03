@@ -6,7 +6,7 @@
 /*   By: mdalkili <mdalkilic344@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 03:12:25 by mdalkili          #+#    #+#             */
-/*   Updated: 2025/10/23 19:29:40 by mdalkili         ###   ########.fr       */
+/*   Updated: 2025/10/30 03:38:16 by mdalkili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int extension_control(char *name)
 	i = 0;
 	if(string_len(name) < 5)
 		return (extension_error(0),0);
-	if( name[i] == '.' && name[i + 1] != '/')
+	if( name[i] == '.' && (name[i + 1] != '/' && name[i + 1] != '.'))
 		return (extension_error(1),0);
 	while (i < string_len(name) - 4 && name[i])
 	{
