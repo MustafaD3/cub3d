@@ -27,22 +27,3 @@ char *string_dup(char *string)
 	return (result);
 }
 
-int string_find_char(char *string, char chr, int position)
-{
-	int	i;
-
-	if(position > i)
-		i = position;
-	else
-		i = 0;
-	while(string[i])
-	{
-		if(string[i] == chr)
-		{
-			printf("Bulundu:%d\n",i);
-			return (i);
-		}
-		i++;
-	}
-	return (0);
-}

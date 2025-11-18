@@ -6,7 +6,7 @@
 /*   By: mdalkili <mdalkilic344@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 03:12:25 by mdalkili          #+#    #+#             */
-/*   Updated: 2025/10/30 03:38:16 by mdalkili         ###   ########.fr       */
+/*   Updated: 2025/11/12 03:20:43 by mdalkili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void extension_error(int type)
 {
-	enum e_extension_error_types types;
 	if(type == LENGTH)
 		printf("Dosya 4 Karakter'den Veya Daha Uzun Olmalı\n");
 	if(type == HIDDEN)
@@ -54,4 +53,5 @@ int extension_control(char *name)
 		else
 			return (extension_error(2),0);
 	}
+	return (extension_error(2),0);
 }
