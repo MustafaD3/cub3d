@@ -1,7 +1,7 @@
 NAME=cub3d
 CC=cc
 CFLAGS= -Wall -Wextra -Werror
-SRC= src/file_extension.c src/string_utils.c src/map_parse.c src/map_parse_two.c main.c src/game/start.c src/game/events.c src/game/event_func.c src/game/free_game.c src/game/map.c
+SRC= src/file_extension.c src/string_utils.c src/map_parse.c src/map_parse_two.c main.c src/game/start.c src/game/events.c src/game/event_func.c src/game/free_game.c src/game/map.c src/game/draw.c
 OBJ=$(SRC:.c=.o)
 
 %.o: %.c

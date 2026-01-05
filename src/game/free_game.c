@@ -6,13 +6,13 @@
 /*   By: mdalkili <mdalkilic344@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 01:30:22 by mdalkili          #+#    #+#             */
-/*   Updated: 2025/11/14 01:41:44 by mdalkili         ###   ########.fr       */
+/*   Updated: 2025/11/26 00:44:54 by mdalkili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-void free_game(t_game *game)
+void free_map(t_game *game)
 {
 	int	i;
 
@@ -33,9 +33,16 @@ void free_game(t_game *game)
 	free(game->map->ea);
 	free(game->map->we);
 	free(game->map->f);
+}
+
+void free_game(t_game *game)
+{
+
+	free(game->player->rays);
 	mlx_destroy_image(game->mlx, game->window_data.img);
 	mlx_destroy_window(game->mlx, game->mlx_win);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
 	game->mlx = NULL;
+	free_map(game);
 }

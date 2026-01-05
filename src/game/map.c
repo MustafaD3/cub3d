@@ -6,11 +6,35 @@
 /*   By: mdalkili <mdalkilic344@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 00:13:35 by mdalkili          #+#    #+#             */
-/*   Updated: 2025/11/19 02:26:09 by mdalkili         ###   ########.fr       */
+/*   Updated: 2025/11/26 02:25:21 by mdalkili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
+
+static void calculate_ray(t_game *game, int i)
+{
+	double start_angle;
+	double angle_step;
+	double ray_angle;
+	double dir_x;
+	double dir_y;
+	double start_x;
+	double start_y;
+	
+	start_x = (game->player->p_x * game->cell_size) + (game->cell_size / 2);
+	start_y = (game->player->p_y * game->cell_size) + (game->cell_size / 2);
+	game->player->rays[i].x1 = start_x;
+	game->player->rays[i].y1 = start_y;
+	game->player->rays[i].color = game->ray_color; 
+	start_angle = game->player->angle - game->player->fov/2;
+	angle_step = (game->player->fov) / (game->max_ray - 1);
+	ray_angle = start_angle + i * angle_step;
+	dir_y = sin(ray_angle);
+	dir_x = cos(ray_angle);
+	game->player->rays[i].x2 = start_x + dir_x * 3 * game->cell_size;
+	game->player->rays[i].y2 = start_y + dir_y * 3 * game->cell_size;
+}
 
 static void draw_square(t_window_data *w, int py, int px, int cell_size, int s, int color)
 {
@@ -23,10 +47,7 @@ static void draw_square(t_window_data *w, int py, int px, int cell_size, int s, 
     int by;
     int bx;
 
-    if (!w || !w->addr)
-        return ;
     bpp = w->bits_per_pixel / 8;
-    /* compute pixel origin so `s` is centered inside the cell */
     by = py * cell_size + (cell_size - s) / 2;
     bx = px * cell_size + (cell_size - s) / 2;
     i = 0;
@@ -52,9 +73,30 @@ static void draw_square(t_window_data *w, int py, int px, int cell_size, int s, 
     }
 }
 
+void	draw_player(t_game *game)
+{
+	int	i;
+	
+	i = 0;
+
+	draw_square(&game->window_data, game->player->p_y, game->player->p_x, game->cell_size, game->player->size, game->player->color);
+	while(i < game->max_ray)
+	{
+		calculate_ray(game, i);
+		draw_line(game,game->player->rays[i].x1,
+			game->player->rays[i].x2,
+			game->player->rays[i].y1,
+			game->player->rays[i].y2,
+			game->player->rays[i].color);
+		i++;
+	}
+	if(!game->player->state)
+		game->player->state = 1;
+}
+
 void	draw_map_2d(t_game *game)
 {
-	 int i;
+	int i;
     int j;
 
     if (!game || !game->map || !game->map->matrix)
@@ -66,9 +108,13 @@ void	draw_map_2d(t_game *game)
         while (game->map->matrix[i][j])
         {
             if (game->map->matrix[i][j] == '1')
-                draw_square(&game->window_data, i, j, game->cell_size, game->cell_size, 0xFFDDBB);
-            if (game->map->matrix[i][j] == 'P')
-                draw_square(&game->window_data, i, j, game->cell_size, game->player_size, 0x00DDBB);
+				draw_square(&game->window_data, i, j, game->cell_size, game->cell_size, 0xFFDDBB);
+            if (game->map->matrix[i][j] == 'P' && !game->player->state)
+            {
+				game->player->p_y = i;
+				game->player->p_x = j;
+				draw_player(game);
+			}
             j++;
         }
         i++;
