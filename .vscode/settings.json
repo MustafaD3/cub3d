@@ -1,0 +1,9 @@
+{
+	"42header.username": "mdalkili",
+  	"42header.email": "mdalkili@student.42istanbul.com",
+	"files.associations": {
+		"cub3D.h": "c",
+		"mlx_int.h": "c"
+	},
+	"C_Cpp.errorSquiggles": "disabled"
+}
